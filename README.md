@@ -1,150 +1,176 @@
-# Fast API + SQLModel + React example
+# 🦠 Sahlgrenska Global Health Hackathon - Challenge 4  
+## AI-Powered Infection Control Assistant
 
-This is an implementation of a simple TODO list with authentication using FastAPI, SQLModel and React.
+This is an implementation of an **AI-powered infection control assistant** that helps healthcare professionals and patients make **evidence-based decisions** to prevent antimicrobial resistance (AMR) and reduce healthcare-associated infections (HAIs). It combines **clinical guidelines**, **local resistance data**, and **AI-driven insights** into a single intuitive interface.
 
-## Tech stack
+The system includes:
 
-For the frontend we use
-- [React](https://reactjs.org)
-- [TypeScript](https://www.typescriptlang.org)
-- [Chakra-UI](https://chakra-ui.com) for styling
-- [Vite](https://vitejs.dev) for building
+- A **chatbot** that answers infection control questions using clinical knowledge.
+- A **searchable knowledge base** built from PDFs containing WHO/CDC/GLASS guidelines.
+- A secure **FastAPI backend** with JWT authentication.
+- A clean **React frontend** powered by Chakra UI.
 
-For the backend we use
-- [FastAPI](https://fastapi.tiangolo.com) as web framework
-- [SQLModel](https://sqlmodel.tiangolo.com) for interacting with the database
+---
 
-## Installation
+## 🚀 Features
 
-### Installing the backend dependencies
+- 🔍 **Smart Chatbot**: Ask infection control questions and get context-aware answers.
+- 📄 **PDF Upload & Search**: Upload clinical documents and search through them using semantic similarity.
+- 💬 **Personalized Recommendations**: Tailored guidance based on user input and evidence-based practices.
+- 🔐 **JWT Authentication**: Secure login and token refresh mechanism.
+- 🧠 **Vector DB + LLM**: Powered by `SentenceTransformer` and `ChromaDB` for intelligent document retrieval.
 
-If is recommended to first create a virtual environment.
+---
+
+## 🧪 Tech Stack
+
+### Backend
+- **FastAPI** – High-performance API framework
+- **SQLModel** – ORM for database modeling
+- **JWT** – Token-based authentication
+- **ChromaDB** – Vector database for similarity search
+- **Sentence Transformers** – Embedding model (`all-MiniLM-L6-v2`)
+- **SQLite** – For todo/user data (can be swapped with PostgreSQL)
+
+### Frontend
+- **React** + **TypeScript**
+- **Vite** – Fast dev server and bundler
+- **Chakra UI** – Accessible and composable component library
+- **Axios** – HTTP client for API calls
+
+---
+
+## 🗂️ Project Structure
 
 ```
-python3 -m venv venv
+/backend              # FastAPI backend
+  /app                # Main application logic
+  /models             # SQLModels for User/Todo
+  /services           # Business logic
+  /api                # API routes
+  /core               # Config, security, etc.
+  /database.py        # DB connection setup
+
+/frontend             # React frontend
+  /src
+    /components       # Reusable components
+    /pages            # App pages (login, chat, upload)
+    /hooks            # Custom hooks
+    /services         # API service wrappers
 ```
-and activate the virtual environment
-```
-. venv/bin/activate
-```
-Go in to the `backend` directory
-```
+
+---
+
+## 🛠️ Setup Instructions
+
+### 1. Install Backend Dependencies
+
+```bash
 cd backend
-```
-and install the dependencies
-```
-python3 -m pip install -r requirements.txt
-```
-Note that the dependencies are generated from the `requirements.in` file and compiled with [`pip-tools`](https://github.com/jazzband/pip-tools/).
-
-If you want to run the tests you also need to install the dev-requirements, i.e
-```
-python3 -m pip install dev-requirements.txt
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-
-### Installing the frontend dependencies
-First go in to the `frontend` directory
-```
-cd frontend
-```
-and then execute
-```
-npm install
+> Optional: Install dev dependencies for testing
+```bash
+pip install -r dev-requirements.txt
 ```
 
-## Running
+### 2. Set Environment Variables
 
-Once you have installed the dependencies you can run both the backend and frontend server.
-
-## Setting up the secrets
-Before running the backend we need to set up the secrets. You do this by creating the file `backend/.env` with the following content
-```
+Create `.env` file in `/backend`:
+```env
 JWT_SECRET_KEY=my-secret
 JWT_REFRESH_SECRET_KEY=another-secret
 SQL_CONNECTION_STRING=sqlite:///database.db
 ```
-See [.env.exmple](backend/.env.example) for an example file.
 
-Of course the secret keys should be changed when moving to production. We will also use a simple SQLite database i.e `database.db` stored in the same folder. If you want to reset the database, you can just delete this file.
+### 3. Initialize Database
 
+```bash
+python -c "from database import create_db_and_tables; create_db_and_tables()"
+```
 
-### Running the backend
-We will use `uvicorn` to run the backend. Go in to the `backend` directory
-```
-cd backend
-```
-and execute the command
-```
+### 4. Start Backend Server
+
+```bash
 uvicorn app.main:app --reload --port 8000
 ```
-Your backend server should now run at <http://localhost:8000>. You can verify that the server is running by pinging the server
-```
-curl localhost:8000/api/v1/health
-```
-You should now see the following output
-```
-{"msg":"OK"}
-```
-You can also go to `http://localhost:8000/docs` to see the OpenAPI documentation for the endpoints.
 
-## Running the frontend
-To run the frontend, go to the `frontend` directory
-```
-cd frontend
-```
-and execute
-```
-yarn dev
-```
-If you don't have `yarn` install, you can also use
-```
+### 5. Install & Run Frontend
+
+```bash
+cd ../frontend
+npm install
 npm run dev
 ```
-The frontend server should now run on <http://localhost:5173/>, which you can open in the browser.
 
+Your app will be available at [http://localhost:5173](http://localhost:5173)
 
-## Testing
+---
 
-There also automated tests
+## 🧬 APIs Available
 
-### Pre-commit hooks
-There are set of pre-commit hooks defined in the [.pre-commit-config.yaml](.pre-commit-config.yaml) which will run linters and formatter on both the python and javascript code.
+| Endpoint         | Method | Description                          |
+|------------------|--------|--------------------------------------|
+| `/auth/login`    | POST   | Authenticate user                    |
+| `/chat`          | POST   | Chat with the AI assistant           |
+| `/upload-pdf`    | POST   | Upload and process clinical PDFs     |
+| `/todo`          | CRUD   | Todo management                      |
+| `/users`         | CRUD   | User management                      |
+| `/health`        | GET    | Check backend status                 |
 
-These are also run in the CI using [GitHub actions](.github/workflows/pre-commit.yml). If you want make sure that the pre-commit hooks are regularly updated, then you might consider to set up [pre-commit.ci](http://pre-commit.ci) instead.
+---
 
-### Testing the backend
-You can run the backend tests with pytest. First go to the `backend` directory
-```
-cd backend
-```
-and then run `pytest`
-```
-python3 -m pytest -vv
-```
-There is also a [GitHub action](.github/workflows/test_backend.yml) to run run the tests in CI.
+## 🧑‍💻 Demo
 
+![Demo GIF](./Anton%20AI%20Demo-1.gif)
 
-### Testing the frontend
-The frontend tests are run with [vitetest](https://vitest.dev). To run the tests you need to first go to the `frontend` directory
-```
-cd frontend
-```
-and then run
-```
-yarn test
-```
-This will run the test, watch for changes and then rerun the tests it is detects changes. There is also a UI version that can be using using
-```
-yarn test:ui
-```
-Which will also open a dashboard with the test run in the browser.
-You can also just run the tests without watching for changes with the command
-```
-yarn test:run
-```
-To get coverage report, you can run
-```
-yarn coverage
-```
-Finally, there is a [GitHub action](.github/workflows/test_frontend.yml) to run run the tests in CI.
+> Replace `demo.gif` with your actual demo animation or screen recording showing the chatbot and PDF upload features.
+
+---
+
+## 📚 Integration with GLASS & CDC Data
+
+This project supports uploading and querying:
+
+- **WHO GLASS Reports**
+- **CDC Core Infection Control Practices**
+- **Antimicrobial Resistance Surveillance Data**
+
+You can upload these as PDFs, and the assistant will help you extract key information such as:
+
+- AMR trends
+- Antibiotic use patterns
+- Outbreak detection protocols
+- Infection prevention strategies
+
+🔗 Resources used:
+- [WHO GLASS Initiative](https://www.who.int/initiatives/glass)
+- [CDC Infection Control Guidelines](https://www.cdc.gov/infection-control/hcp/core-practices/index.html)
+- [ECDC Antimicrobial Resistance Data](https://www.ecdc.europa.eu/en/publications-data/antimicrobial-resistance)
+
+---
+
+## 📌 License
+
+MIT License – see [LICENSE](LICENSE)
+
+---
+
+## 💡 Future Enhancements
+
+- Add real-time outbreak prediction using AI models trained on HAI datasets.
+- Enable multi-language support for global accessibility.
+- Integrate with hospital EHR systems for live patient risk scoring.
+- Add role-based access for healthcare professionals and patients.
+- Build a mobile-first version for frontline workers.
+
+---
+
+## 🤝 Contributing
+
+Feel free to contribute! Open issues or submit pull requests.
+
+---
