@@ -12,6 +12,17 @@ The system includes:
 
 ---
 
+## 📚 Table of Contents
+
+1. [Tech Stack](#-tech-stack)  
+2. [Project Structure](#-project-structure)  
+3. [Setup Instructions](#-setup-instructions)  
+4. [API Endpoints](#-api-endpoints)  
+5. [Demo Video](#-demo-video)  
+6. [Integration with GLASS & CDC Data](#-integration-with-glass--cdc-data)  
+7. [License](#-license)  
+8. [Future Enhancements](#-future-enhancements)  
+
 ## 🚀 Features
 
 - 🔍 **Smart Chatbot**: Ask infection control questions and get context-aware answers.
@@ -123,11 +134,11 @@ Your app will be available at [http://localhost:5173](http://localhost:5173)
 
 ---
 
-## 🧑‍💻 Demo
+## 🧑‍💻 Demo and Vision
 
 ![Demo GIF](./Anton%20AI%20Demo-1.gif)
 
-> Replace `demo.gif` with your actual demo animation or screen recording showing the chatbot and PDF upload features.
+![Project Explaination](./ANTON-Explaination.mp4)
 
 ---
 
