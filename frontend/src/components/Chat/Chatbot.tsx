@@ -20,7 +20,7 @@ export const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "bot",
-      text: "Hello! I'm your Infection Control Assistant. Ask me about guidelines, protocols, or case management."
+      text: "Hello! I'm Anton Advisor your Infection Control Assistant. Ask me about guidelines, protocols, or case management."
     }
   ]);
   const [input, setInput] = useState("");

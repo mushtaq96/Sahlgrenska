@@ -27,12 +27,17 @@ export function PDFUpload() {
   const uploadFile = async () => {
     if (!file) return;
     setUploading(true);
-
+  
     const formData = new FormData();
-    formData.append('file', file);
-
+    formData.append('file', file); // Make sure this key matches backend expectation
+  
     try {
-      const response = await axiosInstance.post('/upload/upload-pdf', formData);
+      const response = await axiosInstance.post('/upload/upload-pdf', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
       toast({
         title: 'Guidelines uploaded',
         description: 'The clinical guidelines have been added to the knowledge base',
@@ -40,10 +45,25 @@ export function PDFUpload() {
         isClosable: true,
       });
       setFile(null);
-    } catch (error) {
+    } catch (error: any) {
+      let errorMessage = 'Could not upload the guidelines';
+  
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        console.error('Server error response:', error.response.data);
+        errorMessage = error.response.data.message || errorMessage;
+      } else if (error.request) {
+        // No response received
+        console.error('No response received:', error.request);
+        errorMessage = 'No response from server';
+      } else {
+        // Something else went wrong
+        console.error('Error:', error.message);
+      }
+  
       toast({
         title: 'Upload failed',
-        description: 'Could not upload the guidelines',
+        description: errorMessage,
         status: 'error',
         isClosable: true,
       });
@@ -51,7 +71,6 @@ export function PDFUpload() {
       setUploading(false);
     }
   };
-
   return (
     <Container maxW="container.xl" py={8}>
       <Heading mb={6}>Upload Clinical Guidelines</Heading>

@@ -4,6 +4,7 @@ from sentence_transformers import SentenceTransformer
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
 collection = chroma_client.get_or_create_collection(name="guidelines")
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
+#embedder = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
 def add_pdf_chunks_to_vector_db(ids, chunks, metadatas):
     try:

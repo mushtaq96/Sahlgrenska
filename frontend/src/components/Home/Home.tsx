@@ -32,13 +32,13 @@ export function Home() {
           fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
           lineHeight={'110%'}
         >
-          Infection Control{' '}
+          ANTON {' '}
           <Text as={'span'} color={'blue.400'}>
-            Assistant
+            Advisor
           </Text>
         </Heading>
         <Text color={'gray.500'} maxW={'3xl'}>
-          AI-powered assistant for evidence-based infection prevention and antimicrobial stewardship
+          AI-powered assistant for evidence-based infection prevention and antimicrobial supervision
         </Text>
       </Stack>
 
