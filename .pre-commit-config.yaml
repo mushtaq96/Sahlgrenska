@@ -1,0 +1,70 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: requirements-txt-fixer
+
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v3.9.0
+    hooks:
+      - id: reorder-python-imports
+        files: ^backend/.*\.py$
+
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        files: ^backend/.*\.py$
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.262'
+    hooks:
+      - id: ruff
+        files: ^backend/.*\.py$
+        args: [--fix, --exit-non-zero-on-fix]
+
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.4.0
+    hooks:
+      - id: add-trailing-comma
+        files: ^backend/.*\.py$
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.2.0
+    hooks:
+      - id: mypy
+        files: ^backend/.*\.py$
+        additional_dependencies: ['sqlmodel']
+
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.1.2
+    hooks:
+      - id: prettier
+        files: ^frontend/src/.*\.(ts|tsx|js|css|html|json)$
+        args:
+          ["--config=frontend/.prettierrc.cjs", "--ignore-path=frontend/.prettierignore"]
+
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v8.38.0"
+    hooks:
+      - id: eslint
+        additional_dependencies:
+          - eslint
+          - eslint-config-react-app
+          - typescript
+          - "@typescript-eslint/parser"
+          - "@typescript-eslint/eslint-plugin"
+          - eslint-config-prettier # turns off all rules that might conflict with prettier
+          - eslint-plugin-jsx-a11y # checks accessibility rules on jsx elements
+          - eslint-plugin-prettier # runs prettier as an eslint rule
+          - eslint-plugin-react # react specific linting rules
+          - eslint-plugin-react-hooks # enforces the rules of hooks
+        files: ^frontend/src/.*\.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
+        types: [file]
+        args: ["--config=frontend/.eslintrc.json", "--ignore-path=frontend/.eslintignore", "--fix"]
